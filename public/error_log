@@ -1,0 +1,6 @@
+[03-Jan-2021 04:02:32 UTC] PHP Fatal error:  Uncaught RuntimeException: A facade root has not been set. in /home/amazlife/Indianbooster.com/codecanyon-26536593-phpshort-url-shortener-software/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php:258
+Stack trace:
+#0 /home/amazlife/Indianbooster.com/codecanyon-26536593-phpshort-url-shortener-software/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(424): Illuminate\Support\Facades\Facade::__callStatic('replaceNamespac...', Array)
+#1 /home/amazlife/Indianbooster.com/codecanyon-26536593-phpshort-url-shortener-software/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(401): Illuminate\Foundation\Exceptions\Handler->registerErrorViewPaths()
+#2 /home/amazlife/Indianbooster.com/codecanyon-26536593-phpshort-url-shortener-software/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(312): Illuminate\Foundation\Exceptions\Handler->renderHttpException(Object(Symfony\Component\HttpKernel\Exception\HttpException))
+#3 /home/amazlife/Ind in /home/amazlife/Indianbooster.com/codecanyon-26536593-phpshort-url-shortener-software/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php on line 258

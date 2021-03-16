@@ -1,0 +1,90 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Migration;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+
+class UpdateController extends Controller
+{
+    public function index()
+    {
+        return view('update.content', ['view' => 'update.welcome']);
+    }
+
+    public function overview()
+    {
+        $migrations = $this->getMigrations();
+        $executedMigrations = $this->getExecutedMigrations();
+
+        return view('update.content', ['view' => 'update.overview', 'updates' => count($migrations) - count($executedMigrations)]);
+    }
+
+    public function complete()
+    {
+        return view('update.content', ['view' => 'update.complete']);
+    }
+
+    /**
+     * Update the database with the new migrations
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateDatabase()
+    {
+        $migrateDatabase = $this->migrateDatabase();
+        if ($migrateDatabase !== true) {
+            return back()->with('error', __('Failed to migrate the database. ' . $migrateDatabase));
+        }
+
+        return redirect()->route('update.complete');
+    }
+
+    /**
+     * Migrate the database
+     *
+     * @return bool|string
+     */
+    private function migrateDatabase()
+    {
+        try {
+            Artisan::call('migrate', ['--force'=> true]);
+
+            return true;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * Get the available migrations
+     *
+     * @return array
+     */
+    private function getMigrations()
+    {
+        $migrations = scandir(database_path().'/migrations');
+
+        $output = [];
+        foreach($migrations as $migration) {
+            // Select only the .php files
+            if($migration != '.' && $migration != '..' && substr($migration, -4, 4) == '.php') {
+                $output[] = str_replace('.php', '', $migration);
+            }
+        }
+
+        return $output;
+    }
+
+    /**
+     * Get the executed migrations
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    private function getExecutedMigrations()
+    {
+        return Migration::all()->pluck('migration');
+    }
+}
